@@ -1,4 +1,7 @@
 /** @type {import('next').NextConfig} */
+
+const sharedImageSrcAllowed = ['ch.sitecoredemo.com'];
+
 module.exports = {
   eslint: {
     // Disabling on production builds because we're running checks on PRs via GitHub Actions.
@@ -12,7 +15,8 @@ module.exports = {
         hostname: 'cdn.shopify.com',
         pathname: '/s/files/**'
       }
-    ]
+    ],
+    domains: ['localhost', ...sharedImageSrcAllowed]
   },
   async redirects() {
     return [
