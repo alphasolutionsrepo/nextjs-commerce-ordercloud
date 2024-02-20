@@ -1,22 +1,22 @@
 import Grid from 'components/grid';
 import { GridTileImage } from 'components/grid/tile';
-import { Product } from 'lib/shopify/types';
 import Link from 'next/link';
+import { BuyerProduct } from 'ordercloud-javascript-sdk';
 
-export default function ProductGridItems({ products }: { products: Product[] }) {
+export default function ProductGridItems({ products }: { products: BuyerProduct[] }) {
   return (
     <>
       {products.map((product) => (
-        <Grid.Item key={product.handle} className="animate-fadeIn">
-          <Link className="relative inline-block h-full w-full" href={`/product/${product.handle}`}>
+        <Grid.Item key={product.ID} className="animate-fadeIn">
+          <Link className="relative inline-block h-full w-full" href={`/product/${product.ID}`}>
             <GridTileImage
-              alt={product.title}
+              alt={product.Name ?? ''}
               label={{
-                title: product.title,
-                amount: product.priceRange.maxVariantPrice.amount,
-                currencyCode: product.priceRange.maxVariantPrice.currencyCode
+                title: product.Name ?? '',
+                amount: product.PriceSchedule?.PriceBreaks?.at(0)?.Price?.toString() ?? '0',
+                currencyCode: product.xp.CurrencyCode
               }}
-              src={product.featuredImage?.url}
+              src={product.xp.Images?.length > 0 ? product.xp.Images[0].Url : null}
               fill
               sizes="(min-width: 768px) 33vw, (min-width: 640px) 50vw, 100vw"
             />

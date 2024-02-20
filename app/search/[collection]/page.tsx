@@ -1,4 +1,3 @@
-import { getCollection, getCollectionProducts } from 'lib/shopify';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
@@ -6,22 +5,32 @@ import Grid from 'components/grid';
 import ProductGridItems from 'components/layout/product-grid-items';
 import { defaultSort, sorting } from 'lib/constants';
 
-export const runtime = 'edge';
+// export const runtime = 'edge';
 
 export async function generateMetadata({
   params
 }: {
   params: { collection: string };
 }): Promise<Metadata> {
-  const collection = await getCollection(params.collection);
+  const category = await getCategory(decodeURIComponent(params.collection));
 
-  if (!collection) return notFound();
+  if (!category) return notFound();
 
   return {
-    title: collection.seo?.title || collection.title,
-    description:
-      collection.seo?.description || collection.description || `${collection.title} products`
+    title: category.Name,
+    description: category.Description || `${category.Name} products`
   };
+}
+
+async function getCategory(name: string) {
+  const res = await fetch(`http://localhost:3000/api/category/${name}`);
+  return await res.json();
+}
+
+async function getProducts(name: string) {
+  const res = await fetch(`http://localhost:3000/api/products/${name}`);
+  const data = await res.json();
+  return data;
 }
 
 export default async function CategoryPage({
@@ -33,7 +42,11 @@ export default async function CategoryPage({
 }) {
   const { sort } = searchParams as { [key: string]: string };
   const { sortKey, reverse } = sorting.find((item) => item.slug === sort) || defaultSort;
-  const products = await getCollectionProducts({ collection: params.collection, sortKey, reverse });
+  //const products = await getCollectionProducts({ collection: params.collection, sortKey, reverse });
+
+  const res = await getProducts(decodeURIComponent(params.collection));
+  const products = res?.Items;
+  if (!products) return <></>;
 
   return (
     <section>

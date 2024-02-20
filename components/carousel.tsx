@@ -1,10 +1,10 @@
-import { getCollectionProducts } from 'lib/shopify';
+import { getCollectionProducts } from 'lib/order-cloud';
 import Link from 'next/link';
 import { GridTileImage } from './grid/tile';
 
 export async function Carousel() {
   // Collections that start with `hidden-*` are hidden from the search page.
-  const products = await getCollectionProducts({ collection: 'hidden-homepage-carousel' });
+  const products = (await getCollectionProducts('PlayShopPublic'))?.Items;
 
   if (!products?.length) return null;
 
@@ -16,18 +16,18 @@ export async function Carousel() {
       <ul className="flex animate-carousel gap-4">
         {carouselProducts.map((product, i) => (
           <li
-            key={`${product.handle}${i}`}
+            key={`${product.ID}${i}`}
             className="relative aspect-square h-[30vh] max-h-[275px] w-2/3 max-w-[475px] flex-none md:w-1/3"
           >
-            <Link href={`/product/${product.handle}`} className="relative h-full w-full">
+            <Link href={`/product/${product.ID}`} className="relative h-full w-full">
               <GridTileImage
-                alt={product.title}
+                alt={product.Name}
                 label={{
-                  title: product.title,
-                  amount: product.priceRange.maxVariantPrice.amount,
-                  currencyCode: product.priceRange.maxVariantPrice.currencyCode
+                  title: product.Name,
+                  amount: product.PriceSchedule?.PriceBreaks?.at(0)?.Price?.toString() ?? '0',
+                  currencyCode: product.xp.CurrencyCode
                 }}
-                src={product.featuredImage?.url}
+                src={product.xp?.Images?.at(0)?.Url}
                 fill
                 sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
               />
