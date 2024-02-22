@@ -2,6 +2,7 @@
 
 import { TAGS } from 'lib/constants';
 import {
+  addPayment,
   addToCart,
   auth,
   createCart,
@@ -16,6 +17,7 @@ import { revalidateTag } from 'next/cache';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { Address, VariantSpec } from 'ordercloud-javascript-sdk';
+import { cache } from 'react';
 
 export async function getToken(skip?: boolean) {
   let token = cookies().get('token')?.value;
@@ -25,7 +27,7 @@ export async function getToken(skip?: boolean) {
   return token as string;
 }
 
-export async function getDetails() {
+export const getDetails = cache(async function () {
   let cartId = cookies().get('cartId')?.value;
   let cart;
 
@@ -34,7 +36,7 @@ export async function getDetails() {
     return cart;
   }
   return undefined;
-}
+});
 
 // should be upsert instead
 export async function addItem(
@@ -166,6 +168,11 @@ export async function addShippingMethod(prevState: any, formData: FormData) {
 }
 
 export async function addPaymentMethod(prevState: any, formData: FormData) {
+  const cartId = cookies().get('cartId')?.value;
+  if (!cartId) {
+    return 'Missing cart ID';
+  }
+  await addPayment(cartId, await getToken());
   return '';
 }
 

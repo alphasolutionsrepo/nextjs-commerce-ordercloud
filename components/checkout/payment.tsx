@@ -1,44 +1,11 @@
-import { ArrowRightIcon } from '@heroicons/react/24/outline';
+'use client';
+import { RadioGroup } from '@headlessui/react';
 import clsx from 'clsx';
 import { addPaymentMethod } from 'components/cart/actions';
-import LoadingDots from 'components/loading-dots';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { FormEvent, useState } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
-
-function SubmitButton() {
-  const { pending } = useFormStatus();
-  const router = useRouter();
-  const pathname = usePathname();
-  const buttonClasses =
-    'mx-auto relative flex w-1/4 items-center justify-center rounded-full bg-blue-600 p-4 tracking-wide text-white';
-  const disabledClasses = 'cursor-not-allowed opacity-60 hover:opacity-60';
-
-  return (
-    <button
-      onClick={(e: React.FormEvent<HTMLButtonElement>) => {
-        if (pending) {
-          e.preventDefault();
-        } else {
-          router.push(pathname + '?step=confirm', { scroll: false });
-        }
-      }}
-      aria-label="Continue"
-      aria-disabled={pending}
-      className={clsx(buttonClasses, {
-        'hover:opacity-90': true,
-        disabledClasses: pending
-      })}
-    >
-      <div className="absolute left-0 ml-4">
-        {pending ? <LoadingDots className="mb-3 bg-white" /> : <></>}
-      </div>
-      Continue
-      <div className="absolute right-0 mr-4">
-        {pending ? <></> : <ArrowRightIcon className="h-5" />}
-      </div>
-    </button>
-  );
-}
+import SubmitButton from './submit-button';
 
 export default function Payment({ className }: { className?: string }) {
   const [message, formAction] = useFormState(addPaymentMethod, null);
@@ -46,6 +13,24 @@ export default function Payment({ className }: { className?: string }) {
   const router = useRouter();
   const pathname = usePathname();
   const open = searchParams.get('step') === 'payment';
+  const { pending } = useFormStatus();
+
+  const paymentMethods = [{ id: '1', name: 'PO Number' }];
+  const [selectedMethod, setSelectedMethod] = useState(paymentMethods.at(0));
+
+  const onSubmitPayment = async function (event: FormEvent<HTMLFormElement>) {
+    if (pending) {
+      event.preventDefault();
+    } else {
+      const formData = new FormData(event.currentTarget);
+      const id = formData.get('payment-method') as string;
+      setSelectedMethod(paymentMethods.find((x) => x.id == id));
+      // localStorage.setItem("payment-method", formData.get("payment-method[id]") as string);
+
+      router.push(pathname + '?step=confirm', { scroll: false });
+    }
+  };
+
   return (
     <>
       <div className="mx-auto max-w-screen-2xl content-center px-4">
@@ -62,10 +47,41 @@ export default function Payment({ className }: { className?: string }) {
               </button>
             )}
           </div>
+          {!open && (
+            <div className="flex w-full flex-row items-start justify-around">
+              <div className="flex flex-col">
+                <br />
+                <div>{selectedMethod?.name}</div>
+              </div>
+            </div>
+          )}
           {open && (
-            <form action={formAction}>
-              <div className="-mx-3 mb-6 flex flex-wrap"></div>
-              <SubmitButton />
+            <form action={formAction} onSubmit={onSubmitPayment}>
+              <div className=" mb-6">
+                <RadioGroup name="payment-method" defaultValue={selectedMethod.id}>
+                  {paymentMethods.map((method) => {
+                    return (
+                      <RadioGroup.Option
+                        key={method.id}
+                        value={method.id}
+                        className="ml-10 mr-10 mt-4 flex flex-col"
+                      >
+                        {({ checked }) => (
+                          <div
+                            className={clsx(
+                              'flex flex-row justify-center rounded border p-2',
+                              checked ? 'bg-blue-600 text-white' : 'bg-white'
+                            )}
+                          >
+                            <span>{method.name}</span>
+                          </div>
+                        )}
+                      </RadioGroup.Option>
+                    );
+                  })}
+                </RadioGroup>
+              </div>
+              <SubmitButton name="Continue" />
               <p aria-live="polite" className="sr-only" role="status">
                 {message}
               </p>

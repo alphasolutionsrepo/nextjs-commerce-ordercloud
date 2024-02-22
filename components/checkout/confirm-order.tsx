@@ -1,3 +1,4 @@
+'use client';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import { confirmOrder } from 'components/cart/actions';

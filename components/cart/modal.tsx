@@ -13,7 +13,7 @@ import { DeleteItemButton } from './delete-item-button';
 import { EditItemQuantityButton } from './edit-item-quantity-button';
 import OpenCart from './open-cart';
 
-type MerchandiseSearchParams = {
+export type MerchandiseSearchParams = {
   [key: string]: string;
 };
 

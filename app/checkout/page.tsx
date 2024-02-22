@@ -1,5 +1,5 @@
-'use client';
 import Addresses from 'components/checkout/addresses';
+import CheckoutCart from 'components/checkout/checkout-cart';
 import ConfirmOrder from 'components/checkout/confirm-order';
 import Payment from 'components/checkout/payment';
 import Shipping from 'components/checkout/shipping';
@@ -47,8 +47,10 @@ export default async function CheckoutPage() {
           <Payment />
           <ConfirmOrder />
         </div>
-        <div className="w-1/3">
-          <div>cart</div>
+        <div className="mt-10 w-1/3">
+          <Suspense>
+            <CheckoutCart />
+          </Suspense>
         </div>
       </div>
       <Suspense>

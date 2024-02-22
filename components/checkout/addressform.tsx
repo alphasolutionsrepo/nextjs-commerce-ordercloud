@@ -1,8 +1,17 @@
 'use client';
 
+import { Address } from './addresses';
 import Country from './countryselector';
 
-export default function AddressInput({ className, name }: { className?: string; name: string }) {
+export default function AddressInput({
+  className,
+  name,
+  data
+}: {
+  className?: string;
+  name: string;
+  data: Address | undefined;
+}) {
   return (
     <>
       <div className="-mx-3 mb-6 flex flex-wrap">
@@ -17,6 +26,7 @@ export default function AddressInput({ className, name }: { className?: string; 
             className="mb-3 block w-full appearance-none rounded border px-4 py-3 leading-tight text-gray-700 focus:outline-none"
             name={`${name}-first-name`}
             id={`${name}-first-name`}
+            defaultValue={data?.firstName}
             type="text"
             placeholder="Jane"
             required
@@ -33,6 +43,7 @@ export default function AddressInput({ className, name }: { className?: string; 
             className="block w-full appearance-none rounded border border-gray-200 px-4 py-3 leading-tight text-gray-700 focus:border-gray-500 focus:outline-none"
             name={`${name}-last-name`}
             id={`${name}-last-name`}
+            defaultValue={data?.lastName}
             type="text"
             placeholder="Doe"
             required
@@ -51,6 +62,7 @@ export default function AddressInput({ className, name }: { className?: string; 
             className="mb-3 block w-full appearance-none rounded border px-4 py-3 leading-tight text-gray-700 focus:outline-none"
             name={`${name}-street-1`}
             id={`${name}-street-1`}
+            defaultValue={data?.street1}
             type="text"
             placeholder="Street 1"
             required
@@ -69,6 +81,7 @@ export default function AddressInput({ className, name }: { className?: string; 
             className="mb-3 block w-full appearance-none rounded border px-4 py-3 leading-tight text-gray-700 focus:outline-none"
             name={`${name}-street-2`}
             id={`${name}-street-2`}
+            defaultValue={data?.street2}
             type="text"
             placeholder="Street 2"
           />
@@ -91,6 +104,7 @@ export default function AddressInput({ className, name }: { className?: string; 
             className="block w-full appearance-none rounded border border-gray-200 px-4 py-3 leading-tight text-gray-700 focus:border-gray-500 focus:outline-none"
             name={`${name}-city`}
             id={`${name}-city`}
+            defaultValue={data?.city}
             type="text"
             placeholder="Albuquerque"
             required
@@ -107,6 +121,7 @@ export default function AddressInput({ className, name }: { className?: string; 
             className="block w-full appearance-none rounded border border-gray-200 px-4 py-3 leading-tight text-gray-700 focus:border-gray-500 focus:outline-none"
             name={`${name}-state`}
             id={`${name}-state`}
+            defaultValue={data?.state}
             type="text"
             placeholder="New Mexico"
             required
@@ -123,6 +138,7 @@ export default function AddressInput({ className, name }: { className?: string; 
             className="block w-full appearance-none rounded border border-gray-200 px-4 py-3 leading-tight text-gray-700 focus:border-gray-500 focus:outline-none"
             name={`${name}-zip`}
             id={`${name}-zip`}
+            defaultValue={data?.zip}
             type="text"
             placeholder="90210"
             required
@@ -141,6 +157,7 @@ export default function AddressInput({ className, name }: { className?: string; 
             className="mb-3 block w-full appearance-none rounded border px-4 py-3 leading-tight text-gray-700 focus:outline-none"
             name={`${name}-phone`}
             id={`${name}-phone`}
+            defaultValue={data?.phone}
             type="tel"
             placeholder="12345678"
           />

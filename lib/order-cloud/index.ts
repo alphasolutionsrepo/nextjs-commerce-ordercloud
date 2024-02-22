@@ -8,6 +8,8 @@ import {
   Me,
   Order,
   Orders,
+  Payment,
+  Payments,
   Tokens,
   VariantSpec
 } from 'ordercloud-javascript-sdk';
@@ -131,7 +133,7 @@ export async function getProducts({ query }: { query?: string }, token: string) 
   }
 }
 
-export async function getMenu(handle: string, token: string): Promise<Menu[]> {
+export const getMenu = async function (handle: string, token: string): Promise<Menu[]> {
   if (handle == 'header-menu') {
     const categories = await getCategories(1, token);
     return (
@@ -146,7 +148,7 @@ export async function getMenu(handle: string, token: string): Promise<Menu[]> {
     { title: 'Contact us', path: 'https://www.sitecore.com/company/contact-us' }
   ];
   return menu;
-}
+};
 
 export async function getProductRecommendations(handle: string, categoryID: string, token: string) {
   // await auth();
@@ -185,12 +187,13 @@ export async function getCart(cartId: string, token: string): Promise<OrderDetai
       return undefined;
     }
     if (cart?.ID) {
+      await auth(token);
       const lines = await LineItems.List('Outgoing', cartId);
       return { order: cart, lines: lines.Items };
     }
     return { order: cart };
   } catch (err) {
-    console.error(err);
+    const test = Tokens.GetAccessToken();
   }
 }
 
@@ -248,4 +251,10 @@ export async function submitOrder(cartId: string, token: string): Promise<Order>
   await auth(token);
   const order = await Orders.Submit('Outgoing', cartId);
   return order;
+}
+
+export async function addPayment(cartId: string, token: string): Promise<Payment> {
+  await auth(token);
+  const payment = await Payments.Create('Outgoing', cartId, { Type: 'PurchaseOrder' });
+  return payment;
 }
