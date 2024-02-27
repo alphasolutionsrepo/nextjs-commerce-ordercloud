@@ -3,10 +3,12 @@ import clsx from 'clsx';
 import LoadingDots from 'components/loading-dots';
 import { useFormStatus } from 'react-dom';
 
-export default function SubmitButton({ name }: { name: string }) {
+export default function SubmitButton({ name, className }: { name: string; className?: string }) {
   const { pending } = useFormStatus();
-  const buttonClasses =
-    'mx-auto relative flex w-1/4 items-center justify-center rounded-full bg-blue-600 p-4 tracking-wide text-white';
+  const buttonClasses = clsx(
+    'mx-auto relative flex w-1/4 items-center justify-center rounded-full bg-blue-600 p-4 tracking-wide text-white',
+    className
+  );
   const disabledClasses = 'cursor-not-allowed opacity-60 hover:opacity-60';
 
   return (

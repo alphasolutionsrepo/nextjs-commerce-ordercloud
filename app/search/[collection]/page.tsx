@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import Grid from 'components/grid';
 import ProductGridItems from 'components/layout/product-grid-items';
 import { defaultSort, sorting } from 'lib/constants';
+import { cookies } from 'next/headers';
 
 // export const runtime = 'edge';
 
@@ -23,12 +24,22 @@ export async function generateMetadata({
 }
 
 async function getCategory(name: string) {
-  const res = await fetch(`http://localhost:3000/api/category/${name}`);
-  return await res.json();
+  try {
+    const res = await fetch(`http://localhost:3000/api/category/${name}`, {
+      credentials: 'include',
+      headers: { Cookie: cookies().toString() }
+    });
+    return await res.json();
+  } catch (error) {
+    return undefined;
+  }
 }
 
 async function getProducts(name: string) {
-  const res = await fetch(`http://localhost:3000/api/products/${name}`);
+  const res = await fetch(`http://localhost:3000/api/products/${name}`, {
+    credentials: 'include',
+    headers: { Cookie: cookies().toString() }
+  });
   const data = await res.json();
   return data;
 }

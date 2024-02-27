@@ -1,7 +1,8 @@
 import Cart from 'components/cart';
+import { getUserMenu } from 'components/cart/actions';
 import OpenCart from 'components/cart/open-cart';
+import Login from 'components/login';
 import LogoSquare from 'components/logo-square';
-import { getMenu } from 'lib/order-cloud';
 import { Menu } from 'lib/order-cloud/types';
 import Link from 'next/link';
 import { Suspense } from 'react';
@@ -10,7 +11,7 @@ import Search from './search';
 const { SITE_NAME } = process.env;
 
 export default async function Navbar() {
-  const menu = await getMenu('header-menu');
+  const menu = await getUserMenu('header-menu');
 
   return (
     <nav className="relative flex items-center justify-between p-4 lg:px-6">
@@ -44,6 +45,7 @@ export default async function Navbar() {
           <Search />
         </div>
         <div className="flex justify-end md:w-1/3">
+          <Login className="mr-2" />
           <Suspense fallback={<OpenCart />}>
             <Cart />
           </Suspense>

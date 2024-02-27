@@ -7,6 +7,12 @@ import {
   auth,
   createCart,
   getCart,
+  getCategories,
+  getCategoryProducts,
+  getMenu,
+  getUser,
+  logInUser,
+  logOutUser,
   removeFromCart,
   submitOrder,
   updateCart,
@@ -189,4 +195,43 @@ export async function confirmOrder(prevState: any, formData: FormData) {
   return order.IsSubmitted
     ? 'Order created'
     : 'Failed to place order, please try again or contact customer service';
+}
+
+export async function login(prevState: any, formData: FormData) {
+  const username = formData.get('username') as string;
+  const password = formData.get('password') as string;
+  const token = await logInUser(username, password);
+  if (token && token.access_token) {
+    cookies().set('token', token.access_token);
+  } else return 'Unknown username or password';
+
+  redirect('/');
+}
+
+export async function getUserDetails() {
+  const user = await getUser(await getToken(true));
+  return user;
+}
+
+export async function getUserMenu(name: string) {
+  const menu = await getMenu(name, await getToken(true));
+  return menu;
+}
+
+export async function getUserCategories(depth: number) {
+  const menu = await getCategories(depth, await getToken(true));
+  return menu;
+}
+
+export async function logout(prevState: any, formData: FormData) {
+  const token = await logOutUser(await getToken());
+  if (token) {
+    cookies().set('token', token);
+  }
+  redirect('/');
+}
+
+export async function testCats(categoryName: string) {
+  const data = await getCategoryProducts({ categoryName: categoryName }, await getToken());
+  return data;
 }

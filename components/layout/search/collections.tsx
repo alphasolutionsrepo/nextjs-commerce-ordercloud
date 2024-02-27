@@ -1,11 +1,11 @@
 import clsx from 'clsx';
 import { Suspense } from 'react';
 
-import { getCategories } from 'lib/order-cloud';
+import { getUserCategories } from 'components/cart/actions';
 import FilterList from './filter';
 
 async function CollectionList() {
-  const categories = await getCategories(1);
+  const categories = await getUserCategories(1);
   return (
     <FilterList
       list={

@@ -58,7 +58,7 @@ export default function Payment({ className }: { className?: string }) {
           {open && (
             <form action={formAction} onSubmit={onSubmitPayment}>
               <div className=" mb-6">
-                <RadioGroup name="payment-method" defaultValue={selectedMethod.id}>
+                <RadioGroup name="payment-method" defaultValue={selectedMethod?.id}>
                   {paymentMethods.map((method) => {
                     return (
                       <RadioGroup.Option

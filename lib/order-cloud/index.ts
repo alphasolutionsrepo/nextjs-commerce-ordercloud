@@ -1,4 +1,5 @@
 import {
+  AccessToken,
   Address,
   ApiRole,
   Auth,
@@ -6,6 +7,7 @@ import {
   LineItem,
   LineItems,
   Me,
+  MeUser,
   Order,
   Orders,
   Payment,
@@ -58,7 +60,7 @@ export async function getCategories(depth: number, token: string) {
   }
 }
 
-export async function getCategoryProducts(
+export const getCategoryProducts = async function (
   { categoryId, categoryName }: { categoryId?: string; categoryName?: string },
   token: string
 ) {
@@ -67,22 +69,29 @@ export async function getCategoryProducts(
     let products;
     if (categoryId) products = await Me.ListProducts({ categoryID: categoryId });
     else if (categoryName) {
+      await auth(token);
       const category = await getCategory({ name: categoryName }, token);
-      if (category) products = await Me.ListProducts({ categoryID: category.ID });
+      if (category) {
+        await auth(token);
+        products = await Me.ListProducts({ categoryID: category.ID });
+      }
     }
     return products;
   } catch (err) {
     console.error(err);
   }
-}
+};
 
 export async function getCategory({ id, name }: { id?: string; name?: string }, token: string) {
   try {
     await auth(token);
     let category;
     if (id) category = await Me.GetCategory(id);
-    else if (name)
-      category = (await Me.ListCategories({ search: name, searchOn: ['Name'] })).Items?.at(0);
+    else if (name) {
+      const categories = await Me.ListCategories({ search: name, searchOn: ['Name'] });
+      category = categories.Items?.at(0);
+    }
+
     return category;
   } catch (err) {
     console.error(err);
@@ -165,7 +174,7 @@ export async function getCollectionProducts(catalogId: string, token: string) {
   try {
     await auth(token);
 
-    const products = await Me.ListProducts({ catalogID: catalogId });
+    const products = await Me.ListProducts();
     return products;
   } catch (err) {
     console.error(err);
@@ -193,7 +202,7 @@ export async function getCart(cartId: string, token: string): Promise<OrderDetai
     }
     return { order: cart };
   } catch (err) {
-    const test = Tokens.GetAccessToken();
+    console.error(err);
   }
 }
 
@@ -257,4 +266,32 @@ export async function addPayment(cartId: string, token: string): Promise<Payment
   await auth(token);
   const payment = await Payments.Create('Outgoing', cartId, { Type: 'PurchaseOrder' });
   return payment;
+}
+
+export async function logInUser(
+  username: string,
+  password: string
+): Promise<AccessToken | undefined> {
+  try {
+    const token = await Auth.Login(username, password, clientID);
+    return token;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function logOutUser(token: string) {
+  await auth(token);
+  await Tokens.RemoveAccessToken();
+  return await auth();
+}
+
+export async function getUser(token: string): Promise<MeUser | undefined> {
+  try {
+    await auth(token);
+    const user = await Me.Get();
+    return user;
+  } catch (err) {
+    console.error(err);
+  }
 }
