@@ -53,7 +53,6 @@ export default async function CategoryPage({
 }) {
   const { sort } = searchParams as { [key: string]: string };
   const { sortKey, reverse } = sorting.find((item) => item.slug === sort) || defaultSort;
-  //const products = await getCollectionProducts({ collection: params.collection, sortKey, reverse });
 
   const res = await getProducts(decodeURIComponent(params.collection));
   const products = res?.Items;

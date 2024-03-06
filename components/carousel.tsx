@@ -1,10 +1,22 @@
-import { getCollectionProducts } from 'lib/order-cloud';
+import { cookies } from 'next/headers';
 import Link from 'next/link';
 import { GridTileImage } from './grid/tile';
 
+async function getCollectionProducts() {
+  try {
+    const res = await fetch(`http://localhost:3000/api/collection-products`, {
+      credentials: 'include',
+      headers: { Cookie: cookies().toString() }
+    });
+    return await res.json();
+  } catch (error) {
+    return undefined;
+  }
+}
+
 export async function Carousel() {
   // Collections that start with `hidden-*` are hidden from the search page.
-  const products = (await getCollectionProducts('PlayShopPublic'))?.Items;
+  const products = (await getCollectionProducts())?.Items;
 
   if (!products?.length) return null;
 

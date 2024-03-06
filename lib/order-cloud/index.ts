@@ -170,7 +170,7 @@ export async function getProductRecommendations(handle: string, categoryID: stri
   return undefined;
 }
 
-export async function getCollectionProducts(catalogId: string, token: string) {
+export async function getCollectionProducts(token: string) {
   try {
     await auth(token);
 

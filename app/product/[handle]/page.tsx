@@ -6,9 +6,45 @@ import { Gallery } from 'components/product/gallery';
 import { ProductDescription } from 'components/product/product-description';
 //import { getProduct, getProductRecommendations } from 'lib/shopify';
 import Footer from 'components/layout/footer';
-import { getProduct, getSpecs, getVariants } from 'lib/order-cloud';
+import { cookies } from 'next/headers';
 
 // export const runtime = 'edge';
+
+async function getProduct(name: string) {
+  try {
+    const res = await fetch(`http://localhost:3000/api/product/${name}`, {
+      credentials: 'include',
+      headers: { Cookie: cookies().toString() }
+    });
+    return await res.json();
+  } catch (error) {
+    return undefined;
+  }
+}
+
+async function getVariants(name: string) {
+  try {
+    const res = await fetch(`http://localhost:3000/api/variants/${name}`, {
+      credentials: 'include',
+      headers: { Cookie: cookies().toString() }
+    });
+    return await res.json();
+  } catch (error) {
+    return undefined;
+  }
+}
+
+async function getSpecs(name: string) {
+  try {
+    const res = await fetch(`http://localhost:3000/api/specs/${name}`, {
+      credentials: 'include',
+      headers: { Cookie: cookies().toString() }
+    });
+    return await res.json();
+  } catch (error) {
+    return undefined;
+  }
+}
 
 export async function generateMetadata({
   params

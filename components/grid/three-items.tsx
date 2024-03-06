@@ -1,5 +1,5 @@
 import { GridTileImage } from 'components/grid/tile';
-import { getCollectionProducts } from 'lib/order-cloud';
+import { cookies } from 'next/headers';
 // import type { Product } from 'lib/shopify/types';
 import Link from 'next/link';
 import { BuyerProduct } from 'ordercloud-javascript-sdk';
@@ -38,9 +38,21 @@ function ThreeItemGridItem({
   );
 }
 
+async function getCollectionProducts() {
+  try {
+    const res = await fetch(`http://localhost:3000/api/collection-products`, {
+      credentials: 'include',
+      headers: { Cookie: cookies().toString() }
+    });
+    return await res.json();
+  } catch (error) {
+    return undefined;
+  }
+}
+
 export async function ThreeItemGrid() {
   // Collections that start with `hidden-*` are hidden from the search page.
-  const homepageItems = await getCollectionProducts('PlayShopPublic');
+  const homepageItems = await getCollectionProducts();
   if (
     !homepageItems?.Items ||
     !homepageItems.Items[0] ||

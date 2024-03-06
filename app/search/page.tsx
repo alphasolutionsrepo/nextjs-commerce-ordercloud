@@ -1,7 +1,7 @@
 import Grid from 'components/grid';
 import ProductGridItems from 'components/layout/product-grid-items';
 import { defaultSort, sorting } from 'lib/constants';
-import { getProducts } from 'lib/order-cloud';
+import { cookies } from 'next/headers';
 
 // export const runtime = 'edge';
 
@@ -9,6 +9,15 @@ export const metadata = {
   title: 'Search',
   description: 'Search for products in the store.'
 };
+
+async function getProducts(query: string | undefined) {
+  const res = await fetch(`http://localhost:3000/api/search/${query}`, {
+    credentials: 'include',
+    headers: { Cookie: cookies().toString() }
+  });
+  const data = await res.json();
+  return data;
+}
 
 export default async function SearchPage({
   searchParams
@@ -19,7 +28,7 @@ export default async function SearchPage({
   const { sortKey, reverse } = sorting.find((item) => item.slug === sort) || defaultSort;
 
   //const products = (await getProducts({ sortKey, reverse, query: searchValue })).Items;
-  const products = (await getProducts({ query: searchValue }))?.Items ?? [];
+  const products = (await getProducts(searchValue))?.Items ?? [];
 
   const resultsText = products.length > 1 ? 'results' : 'result';
 
