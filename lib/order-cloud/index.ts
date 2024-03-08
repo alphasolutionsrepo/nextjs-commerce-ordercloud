@@ -206,10 +206,10 @@ export async function getCart(cartId: string, token: string): Promise<OrderDetai
   }
 }
 
-export async function createCart(token: string): Promise<Order> {
+export async function createCart(token: string): Promise<OrderDetails> {
   await auth(token);
   const cart = await Orders.Create('Outgoing', {});
-  return cart;
+  return { order: cart };
 }
 
 export async function addToCart(
@@ -217,16 +217,20 @@ export async function addToCart(
   productId: string,
   specs: VariantSpec[] | undefined,
   quantity: number,
+  lineId: string | undefined,
   token: string
 ): Promise<void> {
   await auth(token);
-  let addLineItem: LineItem = { ProductID: productId, Quantity: quantity };
+  let addLineItem: LineItem = { ProductID: productId, Quantity: quantity, ID: lineId };
   if (specs) {
     addLineItem.Specs = specs.map((spec) => ({ OptionID: spec.OptionID, SpecID: spec.SpecID }));
   }
 
-  const lineItem = await LineItems.Create('Outgoing', cartId, addLineItem);
-  //const cart = await Cart.CreateLineItem({ProductID: productId, Quantity: quantity});
+  if (addLineItem.ID) {
+    await LineItems.Patch('Outgoing', cartId, addLineItem.ID, addLineItem);
+  } else {
+    const lineItem = await LineItems.Create('Outgoing', cartId, addLineItem);
+  }
 }
 
 export async function removeFromCart(cartId: string, lineId: string, token: string): Promise<void> {

@@ -61,7 +61,7 @@ export async function addItem(
 
   if (!cartId || !cart) {
     cart = await createCart(await getToken());
-    cartId = cart.ID;
+    cartId = cart.order.ID;
     if (cartId) cookies().set('cartId', cartId);
   }
 
@@ -70,8 +70,28 @@ export async function addItem(
   }
 
   try {
-    if (cartId)
-      await addToCart(cartId, payload.productId, payload.variantSpecs, 1, await getToken());
+    if (cartId) {
+      let line = cart?.lines?.find(
+        (line) =>
+          line.ProductID === payload.productId &&
+          line.Specs?.findIndex(
+            (spec) =>
+              payload.variantSpecs?.findIndex(
+                (variantSpec) =>
+                  spec.OptionID === variantSpec.OptionID && spec.SpecID === variantSpec.SpecID
+              ) === -1
+          ) === -1
+      );
+      const quantity = line ? (line.Quantity ?? 0) + 1 : 1;
+      await addToCart(
+        cartId,
+        payload.productId,
+        payload.variantSpecs,
+        quantity,
+        line?.ID,
+        await getToken()
+      );
+    }
     revalidateTag(TAGS.cart);
   } catch (e) {
     return 'Error adding item to cart';
