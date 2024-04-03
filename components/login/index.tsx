@@ -1,4 +1,4 @@
-import { getUserDetails } from 'components/cart/actions';
+import { getUserDetails } from '../cart/actions';
 import UserModal from './modal';
 
 export default async function Login({ className }: { className?: string }) {

@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { Suspense } from 'react';
 
-import { getUserCategories } from 'components/cart/actions';
+import { getUserCategories } from '../../cart/actions';
 import FilterList from './filter';
 
 async function CollectionList() {

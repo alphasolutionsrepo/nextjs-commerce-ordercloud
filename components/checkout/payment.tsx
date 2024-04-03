@@ -1,10 +1,10 @@
 'use client';
 import { RadioGroup } from '@headlessui/react';
 import clsx from 'clsx';
-import { addPaymentMethod } from 'components/cart/actions';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { FormEvent, useState } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
+import { addPaymentMethod } from '../cart/actions';
 import SubmitButton from './submit-button';
 
 export default function Payment({ className }: { className?: string }) {

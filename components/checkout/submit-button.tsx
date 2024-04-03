@@ -1,7 +1,7 @@
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
-import LoadingDots from 'components/loading-dots';
 import { useFormStatus } from 'react-dom';
+import LoadingDots from '../loading-dots';
 
 export default function SubmitButton({ name, className }: { name: string; className?: string }) {
   const { pending } = useFormStatus();

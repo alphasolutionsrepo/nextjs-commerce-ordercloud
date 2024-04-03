@@ -1,8 +1,8 @@
 'use client';
-import { addAddresses } from 'components/cart/actions';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { FormEvent, useState } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
+import { addAddresses } from '../cart/actions';
 import AddressInput from './addressform';
 import SubmitButton from './submit-button';
 

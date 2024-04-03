@@ -1,11 +1,11 @@
-import Cart from 'components/cart';
-import { getUserMenu } from 'components/cart/actions';
-import OpenCart from 'components/cart/open-cart';
-import Login from 'components/login';
-import LogoSquare from 'components/logo-square';
-import { Menu } from 'lib/order-cloud/types';
 import Link from 'next/link';
 import { Suspense } from 'react';
+import { Menu } from '../../../lib/order-cloud/types';
+import Cart from '../../cart';
+import { getUserMenu } from '../../cart/actions';
+import OpenCart from '../../cart/open-cart';
+import Login from '../../login';
+import LogoSquare from '../../logo-square';
 import MobileMenu from './mobile-menu';
 import Search from './search';
 const { SITE_NAME } = process.env;

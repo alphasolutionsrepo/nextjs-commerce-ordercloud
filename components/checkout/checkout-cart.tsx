@@ -1,9 +1,9 @@
-import { getDetails } from 'components/cart/actions';
-import { MerchandiseSearchParams } from 'components/cart/modal';
-import Price from 'components/price';
-import { createUrl } from 'lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
+import { createUrl } from '../../lib/utils';
+import { getDetails } from '../cart/actions';
+import { MerchandiseSearchParams } from '../cart/modal';
+import Price from '../price';
 
 export default async function CheckoutCart({ className }: { className?: string }) {
   const cart = await getDetails();

@@ -1,9 +1,9 @@
 import Link from 'next/link';
 
-import { getUserMenu } from 'components/cart/actions';
-import FooterMenu from 'components/layout/footer-menu';
-import LogoSquare from 'components/logo-square';
 import { Suspense } from 'react';
+import { getUserMenu } from '../cart/actions';
+import LogoSquare from '../logo-square';
+import FooterMenu from './footer-menu';
 
 const { COMPANY_NAME, SITE_NAME } = process.env;
 

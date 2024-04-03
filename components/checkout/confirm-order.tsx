@@ -1,10 +1,10 @@
 'use client';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
-import { confirmOrder } from 'components/cart/actions';
-import LoadingDots from 'components/loading-dots';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useFormState, useFormStatus } from 'react-dom';
+import { confirmOrder } from '../cart/actions';
+import LoadingDots from '../loading-dots';
 
 function SubmitButton() {
   const { pending } = useFormStatus();

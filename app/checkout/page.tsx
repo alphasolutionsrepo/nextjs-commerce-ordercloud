@@ -1,10 +1,10 @@
-import Addresses from 'components/checkout/addresses';
-import CheckoutCart from 'components/checkout/checkout-cart';
-import ConfirmOrder from 'components/checkout/confirm-order';
-import Payment from 'components/checkout/payment';
-import Shipping from 'components/checkout/shipping';
-import Footer from 'components/layout/footer';
 import { Suspense } from 'react';
+import Addresses from '../../components/checkout/addresses';
+import CheckoutCart from '../../components/checkout/checkout-cart';
+import ConfirmOrder from '../../components/checkout/confirm-order';
+import Payment from '../../components/checkout/payment';
+import Shipping from '../../components/checkout/shipping';
+import Footer from '../../components/layout/footer';
 
 // function SubmitButton() {
 //     const { pending } = useFormStatus();

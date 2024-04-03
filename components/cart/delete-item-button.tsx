@@ -2,10 +2,10 @@
 
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
-import { removeItem } from 'components/cart/actions';
-import LoadingDots from 'components/loading-dots';
 import { LineItem } from 'ordercloud-javascript-sdk';
 import { useFormState, useFormStatus } from 'react-dom';
+import LoadingDots from '../loading-dots';
+import { removeItem } from './actions';
 
 function SubmitButton() {
   const { pending } = useFormStatus();

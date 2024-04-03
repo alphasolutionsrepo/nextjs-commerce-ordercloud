@@ -1,6 +1,10 @@
 'use server';
 
-import { TAGS } from 'lib/constants';
+import { revalidateTag } from 'next/cache';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
+import { Address, VariantSpec } from 'ordercloud-javascript-sdk';
+import { TAGS } from '../../lib/constants';
 import {
   addPayment,
   addToCart,
@@ -18,12 +22,7 @@ import {
   updateCart,
   upsertBillingAddress,
   upsertShippingAddress
-} from 'lib/order-cloud';
-import { revalidateTag } from 'next/cache';
-import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
-import { Address, VariantSpec } from 'ordercloud-javascript-sdk';
-import { cache } from 'react';
+} from '../../lib/order-cloud';
 
 export async function getToken(skip?: boolean) {
   let token = cookies().get('token')?.value;
@@ -33,7 +32,7 @@ export async function getToken(skip?: boolean) {
   return token as string;
 }
 
-export const getDetails = cache(async function () {
+export async function getDetails() {
   let cartId = cookies().get('cartId')?.value;
   let cart;
 
@@ -42,7 +41,7 @@ export const getDetails = cache(async function () {
     return cart;
   }
   return undefined;
-});
+}
 
 // should be upsert instead
 export async function addItem(

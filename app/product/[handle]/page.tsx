@@ -2,17 +2,20 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 
-import { Gallery } from 'components/product/gallery';
-import { ProductDescription } from 'components/product/product-description';
-//import { getProduct, getProductRecommendations } from 'lib/shopify';
-import Footer from 'components/layout/footer';
 import { cookies } from 'next/headers';
+import Footer from '../../../components/layout/footer';
+import { Gallery } from '../../../components/product/gallery';
+import { ProductDescription } from '../../../components/product/product-description';
 
 // export const runtime = 'edge';
 
+const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
+  ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+  : 'http://localhost:3000';
+
 async function getProduct(name: string) {
   try {
-    const res = await fetch(`http://localhost:3000/api/product/${name}`, {
+    const res = await fetch(`${baseUrl}/api/product/${name}`, {
       credentials: 'include',
       headers: { Cookie: cookies().toString() }
     });
@@ -24,7 +27,7 @@ async function getProduct(name: string) {
 
 async function getVariants(name: string) {
   try {
-    const res = await fetch(`http://localhost:3000/api/variants/${name}`, {
+    const res = await fetch(`${baseUrl}/api/variants/${name}`, {
       credentials: 'include',
       headers: { Cookie: cookies().toString() }
     });
@@ -36,7 +39,7 @@ async function getVariants(name: string) {
 
 async function getSpecs(name: string) {
   try {
-    const res = await fetch(`http://localhost:3000/api/specs/${name}`, {
+    const res = await fetch(`${baseUrl}/api/specs/${name}`, {
       credentials: 'include',
       headers: { Cookie: cookies().toString() }
     });

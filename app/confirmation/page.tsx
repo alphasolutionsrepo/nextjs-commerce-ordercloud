@@ -1,7 +1,7 @@
 'use client';
-import Footer from 'components/layout/footer';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
+import Footer from '../../components/layout/footer';
 
 export default async function ConfirmationPage() {
   const searchParams = useSearchParams();

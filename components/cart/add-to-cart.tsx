@@ -2,11 +2,11 @@
 
 import { PlusIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
-import { addItem } from 'components/cart/actions';
-import LoadingDots from 'components/loading-dots';
 import { useSearchParams } from 'next/navigation';
 import { BuyerProduct, Variant, VariantSpec } from 'ordercloud-javascript-sdk';
 import { useFormState, useFormStatus } from 'react-dom';
+import LoadingDots from '../loading-dots';
+import { addItem } from './actions';
 
 function SubmitButton({
   availableForSale,

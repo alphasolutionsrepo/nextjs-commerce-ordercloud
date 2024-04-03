@@ -1,17 +1,19 @@
-import Grid from 'components/grid';
-import ProductGridItems from 'components/layout/product-grid-items';
-import { defaultSort, sorting } from 'lib/constants';
 import { cookies } from 'next/headers';
+import Grid from '../../components/grid';
+import ProductGridItems from '../../components/layout/product-grid-items';
+import { defaultSort, sorting } from '../../lib/constants';
 
 // export const runtime = 'edge';
-
+const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
+  ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+  : 'http://localhost:3000';
 export const metadata = {
   title: 'Search',
   description: 'Search for products in the store.'
 };
 
 async function getProducts(query: string | undefined) {
-  const res = await fetch(`http://localhost:3000/api/search/${query}`, {
+  const res = await fetch(`${baseUrl}/api/search/${query}`, {
     credentials: 'include',
     headers: { Cookie: cookies().toString() }
   });

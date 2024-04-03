@@ -1,6 +1,6 @@
-import { AddToCart } from 'components/cart/add-to-cart';
-import Price from 'components/price';
 import { BuyerProduct, Spec, Variant } from 'ordercloud-javascript-sdk';
+import { AddToCart } from '../cart/add-to-cart';
+import Price from '../price';
 import { VariantSelector } from './variant-selector';
 
 export async function ProductDescription({

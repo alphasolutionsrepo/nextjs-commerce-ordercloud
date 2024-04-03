@@ -1,13 +1,9 @@
-import { getToken } from 'components/cart/actions';
-import { getProduct } from 'lib/order-cloud';
-import { cookies } from 'next/headers';
-import { NextRequest } from 'next/server';
+import { getToken } from '../../../../components/cart/actions';
+import { getProduct } from '../../../../lib/order-cloud';
 
 //export const runtime = 'edge';
-
-export async function GET(req: NextRequest, { params }: { params: { name: string } }) {
+export async function GET(req: Request, { params }: { params: { name: string } }) {
   if (!params.name) return Response.json({});
-  console.log(cookies().has('token'));
   const data = await getProduct(params.name, await getToken(true));
   return await Response.json(data);
 }

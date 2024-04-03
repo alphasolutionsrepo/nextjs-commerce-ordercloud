@@ -1,7 +1,7 @@
-import Grid from 'components/grid';
-import { GridTileImage } from 'components/grid/tile';
 import Link from 'next/link';
 import { BuyerProduct } from 'ordercloud-javascript-sdk';
+import Grid from '../grid';
+import { GridTileImage } from '../grid/tile';
 
 export default function ProductGridItems({ products }: { products: BuyerProduct[] }) {
   return (

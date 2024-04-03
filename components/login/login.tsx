@@ -1,7 +1,7 @@
 'use client';
-import { login } from 'components/cart/actions';
-import SubmitButton from 'components/checkout/submit-button';
 import { useFormState } from 'react-dom';
+import { login } from '../cart/actions';
+import SubmitButton from '../checkout/submit-button';
 
 export default function LoginForm() {
   const [message, formAction] = useFormState(login, null);

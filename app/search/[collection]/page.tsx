@@ -1,13 +1,15 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-import Grid from 'components/grid';
-import ProductGridItems from 'components/layout/product-grid-items';
-import { defaultSort, sorting } from 'lib/constants';
 import { cookies } from 'next/headers';
+import Grid from '../../../components/grid';
+import ProductGridItems from '../../../components/layout/product-grid-items';
+import { defaultSort, sorting } from '../../../lib/constants';
 
 // export const runtime = 'edge';
-
+const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
+  ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+  : 'http://localhost:3000';
 export async function generateMetadata({
   params
 }: {
@@ -25,7 +27,7 @@ export async function generateMetadata({
 
 async function getCategory(name: string) {
   try {
-    const res = await fetch(`http://localhost:3000/api/category/${name}`, {
+    const res = await fetch(`${baseUrl}/api/category/${name}`, {
       credentials: 'include',
       headers: { Cookie: cookies().toString() }
     });
@@ -36,7 +38,7 @@ async function getCategory(name: string) {
 }
 
 async function getProducts(name: string) {
-  const res = await fetch(`http://localhost:3000/api/products/${name}`, {
+  const res = await fetch(`${baseUrl}/api/products/${name}`, {
     credentials: 'include',
     headers: { Cookie: cookies().toString() }
   });

@@ -1,8 +1,11 @@
-import { GridTileImage } from 'components/grid/tile';
 import { cookies } from 'next/headers';
-// import type { Product } from 'lib/shopify/types';
 import Link from 'next/link';
 import { BuyerProduct } from 'ordercloud-javascript-sdk';
+import { GridTileImage } from './tile';
+
+const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
+  ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+  : 'http://localhost:3000';
 
 function ThreeItemGridItem({
   item,
@@ -40,7 +43,7 @@ function ThreeItemGridItem({
 
 async function getCollectionProducts() {
   try {
-    const res = await fetch(`http://localhost:3000/api/collection-products`, {
+    const res = await fetch(`${baseUrl}/api/collection-products`, {
       credentials: 'include',
       headers: { Cookie: cookies().toString() }
     });

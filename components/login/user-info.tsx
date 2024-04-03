@@ -1,8 +1,8 @@
 'use client';
-import { logout } from 'components/cart/actions';
-import SubmitButton from 'components/checkout/submit-button';
 import { MeUser } from 'ordercloud-javascript-sdk';
 import { useFormState } from 'react-dom';
+import { logout } from '../cart/actions';
+import SubmitButton from '../checkout/submit-button';
 
 export default function UserInfo({ user }: { user: MeUser }) {
   const [message, formAction] = useFormState(logout, null);

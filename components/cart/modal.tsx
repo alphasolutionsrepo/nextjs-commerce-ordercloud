@@ -2,12 +2,12 @@
 
 import { Dialog, Transition } from '@headlessui/react';
 import { ShoppingCartIcon } from '@heroicons/react/24/outline';
-import Price from 'components/price';
-import { OrderDetails } from 'lib/order-cloud';
-import { createUrl } from 'lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Fragment, useEffect, useRef, useState } from 'react';
+import { OrderDetails } from '../../lib/order-cloud';
+import { createUrl } from '../../lib/utils';
+import Price from '../price';
 import CloseCart from './close-cart';
 import { DeleteItemButton } from './delete-item-button';
 import { EditItemQuantityButton } from './edit-item-quantity-button';

@@ -15,6 +15,7 @@ import {
   Tokens,
   VariantSpec
 } from 'ordercloud-javascript-sdk';
+import fetchAdapter from './fetch-adapter';
 import { Menu } from './types';
 
 const username = 'YOUR_USERNAME'; //username of the user logging in
@@ -30,8 +31,8 @@ const scope: ApiRole[] = [
 
 Configuration.Set({
   baseApiUrl: 'https://sandboxapi.ordercloud.io',
-  timeoutInMilliseconds: 20 * 1000
-  // axiosAdapter: fetchAdapter,
+  timeoutInMilliseconds: 20 * 1000,
+  axiosAdapter: fetchAdapter
 });
 
 export async function auth(token?: string): Promise<string | undefined> {
@@ -60,7 +61,7 @@ export async function getCategories(depth: number, token: string) {
   }
 }
 
-export const getCategoryProducts = async function (
+export async function getCategoryProducts(
   { categoryId, categoryName }: { categoryId?: string; categoryName?: string },
   token: string
 ) {
@@ -80,7 +81,7 @@ export const getCategoryProducts = async function (
   } catch (err) {
     console.error(err);
   }
-};
+}
 
 export async function getCategory({ id, name }: { id?: string; name?: string }, token: string) {
   try {
@@ -114,9 +115,7 @@ export async function getVariants(productId: string, token: string) {
     await auth(token);
     const variants = await Me.ListVariants(productId);
     return variants?.Items;
-  } catch (err) {
-    console.log(err);
-  }
+  } catch (err) {}
 }
 
 export async function getSpecs(productId: string, token: string) {
@@ -125,9 +124,7 @@ export async function getSpecs(productId: string, token: string) {
     await auth(token);
     const specs = await Me.ListSpecs(productId);
     return specs?.Items;
-  } catch (err) {
-    console.log(err);
-  }
+  } catch (err) {}
 }
 
 export async function getProducts({ query }: { query?: string }, token: string) {
@@ -142,7 +139,7 @@ export async function getProducts({ query }: { query?: string }, token: string) 
   }
 }
 
-export const getMenu = async function (handle: string, token: string): Promise<Menu[]> {
+export async function getMenu(handle: string, token: string): Promise<Menu[]> {
   if (handle == 'header-menu') {
     const categories = await getCategories(1, token);
     return (
@@ -157,7 +154,7 @@ export const getMenu = async function (handle: string, token: string): Promise<M
     { title: 'Contact us', path: 'https://www.sitecore.com/company/contact-us' }
   ];
   return menu;
-};
+}
 
 export async function getProductRecommendations(handle: string, categoryID: string, token: string) {
   // await auth();

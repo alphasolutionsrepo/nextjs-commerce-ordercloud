@@ -1,9 +1,9 @@
 'use client';
 
 import clsx from 'clsx';
-import { createUrl } from 'lib/utils';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Spec, Variant } from 'ordercloud-javascript-sdk';
+import { createUrl } from '../../lib/utils';
 
 type Combination = {
   id: string;
